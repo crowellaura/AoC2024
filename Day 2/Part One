@@ -1,0 +1,34 @@
+import pandas as pd
+import numpy as np
+
+#Loading data as a dataframe for viewing
+
+data = pd.read_csv('advent day 2.csv', header = None, sep=",")
+data = data.fillna(0)
+data.head()
+
+#Converting datafrme rows into individual lists, and removing zeros
+
+data_np = np.array(data)
+data_list = data_np.tolist()
+
+clean = [[int(num) for num in report if int(num) != 0] for report in data_list]
+clean[0:5]
+
+#Filtering out every row where sorted (asc and desc) versions aren't equal to original lists (to satisfy increasing/descreasing requirement)
+
+sorted_list = [report for report in clean if sorted(report) == report or sorted(report, reverse=True) == report]
+len(sorted_list)
+
+#Filtering out data rows that didn't have gradual increases/decreases
+
+update_list = []
+
+for report in sorted_list:
+    for i in range(0, len(report) - 1):
+        difference = abs(report[i+1] - report[i])
+        if difference < 1 or difference > 3:
+            update_list.append('Not good')
+            break
+len(update_list)
+len(sorted_list) - len(update_list)
