@@ -28,7 +28,7 @@ for report in sorted_list:
     for i in range(0, len(report) - 1):
         difference = abs(report[i+1] - report[i])
         if difference < 1 or difference > 3:
-            update_list.append('Not good')
+            update_list.append(report)
             break
 len(update_list)
 len(sorted_list) - len(update_list)
