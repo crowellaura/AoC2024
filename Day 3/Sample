@@ -1,0 +1,24 @@
+#Going through a corrupted string looking for the pattern mul(x,y) where x,y are int between 1-3 digits
+
+import re
+
+test_string = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
+regex = r"mul\([0-9]{1,3},[0-9]{1,3}\)"
+test_string_re = re.findall(regex, test_string)
+
+for strings in test_string_re:
+    regex_num = r"\d+"
+    num_list = [re.findall(regex_num, strings) for strings in test_string_re]
+
+int_list = [[int(x) for x in pair] for pair in num_list]
+
+multiples = []
+for pair in int_list:
+    for i in range(len(pair)-1):
+        multiple = pair[i]*pair[i+1]
+        multiples.append(multiple)
+        
+print(int_list)
+print(multiples)
+total = sum(multiples)
+total
