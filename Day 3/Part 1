@@ -1,0 +1,22 @@
+with open('AoC 2024 - Day 3.txt', 'r') as file:
+    data = file.read().replace('\n', '')
+
+def multiples(string):
+    regex = r"mul\([0-9]{1,3},[0-9]{1,3}\)"
+    string_reg = re.findall(regex, string)
+    
+    for strings in string_reg:
+        regex_num = r"\d+"
+        num_list = [re.findall(regex_num, strings) for strings in string_reg]
+        
+    int_list = [[int(x) for x in pair] for pair in num_list]
+    
+    multiples = []
+    for pair in int_list:
+        for i in range(len(pair)-1):
+            multiple = pair[i]*pair[i+1]
+            multiples.append(multiple)
+            
+    return sum(multiples)
+
+multiples(data)
