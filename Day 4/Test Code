@@ -1,0 +1,72 @@
+import re
+import numpy as np
+import pandas as pd
+
+test = ["MMMSXXMASM",
+        "MSAMXMSMSA",
+        "AMXSXMAAMM",
+        "MSAMASMSMX",
+        "XMASAMXAMM",
+        "XXAMMXXAMA",
+        "SMSMSASXSS",
+        "SAXAMASAAA",
+        "MAMMMXMMMM",
+        "MXMXAXMASX"]
+
+reg = r"(?=(XMAS|SAMX))"
+
+test_strings = [list(a) for a in test]
+test_df = pd.DataFrame(test_strings)
+test_array = np.array(test_df)
+
+horizontal = []
+for row in test:
+    for item in re.findall(reg,row):
+        horizontal.append(item)
+    
+
+transpose_array = np.transpose(test_array)
+transpose_list = [''.join(item) for item in transpose_array]
+    
+vertical = []
+for row in transpose_list:
+    for item in re.findall(reg,row):
+        vertical.append(item)
+
+def diagonals(array, regex):
+    l2r = []
+    r2l = []
+    
+    for diagonal in range(-(len(array)-1), len(array)):
+        array_diagonal = np.diagonal(array, offset = diagonal)
+        l2r.append(array_diagonal)
+        
+    flipped_arr = np.fliplr(array)
+    for diagonal in range(-(len(flipped_arr)-1), len(flipped_arr)):
+        flipped_array_diagonal = np.diagonal(flipped_arr, offset = diagonal)
+        r2l.append(flipped_array_diagonal)
+    
+    l2rl = [list(item) for item in l2r]
+    r2ll = [list(item) for item in r2l]
+    
+    l2rs = [''.join(item) for item in l2rl]
+    r2ls = [''.join(item) for item in r2ll]
+    
+    l_diagonal_regex = [re.findall(regex,row) for row in l2rs]
+    r_diagonal_regex = [re.findall(regex,row) for row in r2ls]
+
+    return l_diagonal_regex, r_diagonal_regex
+
+l = diagonals(test_array, reg)[0]
+r = diagonals(test_array, reg)[1]
+
+l_words = [item for item in l if len(item)!= 0]
+r_words = [[i for i in item] for item in r if len(item)!=0]
+
+r_words_sep = []
+for results in r_words:
+    for words in results:
+        r_words_sep.append(words)
+
+print(r_words_sep,l_words)
+print(len(r_words_sep) + len(l_words)+len(vertical)+len(horizontal))
