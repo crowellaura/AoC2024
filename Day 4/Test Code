@@ -61,7 +61,7 @@ l = diagonals(test_array, reg)[0]
 r = diagonals(test_array, reg)[1]
 
 l_words = [item for item in l if len(item)!= 0]
-r_words = [[i for i in item] for item in r if len(item)!=0]
+r_words = [item for item in r if len(item)!=0]
 
 r_words_sep = []
 for results in r_words:
